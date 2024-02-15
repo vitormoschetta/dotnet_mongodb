@@ -7,7 +7,7 @@ public class AppSettings
 
 public class MongoDbSettings
 {
-    public string ConnectionString { get; set; } = "mongodb://localhost:27017";
-    public string DatabaseName { get; set; } = "dotnet-mongodb";
-    public string CollectionName { get; set; } = "todos";
+    public string ConnectionString { get; set; } = null!;
+    public string DatabaseName { get; set; } = null!;
+    public string CollectionName { get; set; } = null!;
 }
