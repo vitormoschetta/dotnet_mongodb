@@ -8,8 +8,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.Configure<AppSettings>(builder.Configuration);
-
-builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDb"));
 builder.Services.AddSingleton<MongoDbContext>();
 builder.Services.AddScoped<TodoService>();
 
