@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using FluentValidation.Results;
 
-namespace dotnet_mongodb.Shared;
+namespace dotnet_mongodb.Application.Shared;
 
 /// <summary>
 /// As classes de input devem herdar essa classe base.

@@ -1,4 +1,4 @@
-namespace dotnet_mongodb.Shared;
+namespace dotnet_mongodb.Application.Shared;
 
 public class BaseEntity
 {
