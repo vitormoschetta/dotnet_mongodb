@@ -3,10 +3,12 @@ using dotnet_mongodb.Application.Shared;
 using dotnet_mongodb.Application.User;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
+using Microsoft.AspNetCore.Authorization;
 
 namespace dotnet_mongodb.Application.CreditCard;
 
 [ApiController]
+[Authorize]
 [Route("v1/credit-card")]
 public class CreditCardController : ControllerBase
 {
@@ -27,10 +29,13 @@ public class CreditCardController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public ActionResult<CreditCardEntity> Get(string id)
+    public ActionResult<CreditCardEntity> Get([FromRoute] string id)
     {
-        var guidID = Guid.Parse(id);
-        return _db.CreditCards.Find(x => x.Id == guidID).FirstOrDefault();
+        if (Guid.TryParse(id, out Guid guidID) && guidID != Guid.Empty)
+        {
+            return _db.CreditCards.Find(x => x.Id == guidID).FirstOrDefault();
+        }   
+        return NotFound();
     }
 
     [HttpPost]

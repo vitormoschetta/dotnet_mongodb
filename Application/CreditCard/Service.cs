@@ -7,11 +7,11 @@ namespace dotnet_mongodb.Application.CreditCard;
 
 public class CreditCardService
 {
-    private readonly MongoDbContext _context;
+    private readonly MongoDbContext _db;
 
-    public CreditCardService(MongoDbContext context)
+    public CreditCardService(MongoDbContext db)
     {
-        _context = context;
+        _db = db;
     }
 
     public Output Execute(CreditCardCreateInput input, UserEntity user)
@@ -21,14 +21,12 @@ public class CreditCardService
 
         var entity = input.ToEntity(user);
 
-        try
-        {
-            _context.CreditCards.InsertOne(entity);
-        }
-        catch (MongoException e)
-        {
-            return Output.Fail(EDomainCode.InternalError, e.Message);
-        }
+        var creditCard = _db.CreditCards.Find(x => x.UserEmail == user.Email && x.Title == entity.Title).FirstOrDefault();
+
+        if (creditCard != null)
+            return Output.Fail(EDomainCode.AlreadyExists, "Já existe um cartão de crédito com esse nome");
+
+       _db.CreditCards.InsertOne(entity);
 
         return Output.Ok(entity);
     }

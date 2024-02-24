@@ -1,3 +1,4 @@
+using dotnet_mongodb.Application.Shared;
 using dotnet_mongodb.Data;
 using MongoDB.Driver;
 
@@ -6,24 +7,37 @@ namespace dotnet_mongodb.Application.User;
 public class UserService
 {
     private readonly MongoDbContext _db;
+    private readonly Jwt _jwt;
+    private static readonly string[] UserRoles = { "user" };
 
-    public UserService(MongoDbContext db)
+    public UserService(MongoDbContext db, Jwt jwt)
     {
         _db = db;
+        _jwt = jwt;
     }
 
-    public UserEntity Add(string email)
+    public async Task<Output> Authenticate(AuthInput input)
     {
-        var user = new UserEntity()
+        var user = await _db.Users.Find(x => x.Email == input.Email).FirstOrDefaultAsync();
+
+        if (user == null)
         {
-            Email = email
-        };
-        _db.Users.InsertOne(user);
-        return user;
-    }
+            user = new UserEntity { Email = input.Email };
+            await _db.Users.InsertOneAsync(user);
+        }
 
-    public UserEntity Get(string email)
-    {
-        return _db.Users.Find(x => x.Email == email).FirstOrDefault();
+        var token = await _jwt.GenerateToken(
+            username: user.Email,
+            email: user.Email,
+            roles: UserRoles
+        );
+
+        var authResponse = new AuthResponse
+        {
+            Email = user.Email,
+            Token = token
+        };
+
+        return Output.Ok(authResponse);
     }
 }
