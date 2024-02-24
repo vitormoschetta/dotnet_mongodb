@@ -1,9 +1,16 @@
 use('pfmdb');
-db.users.insertOne({
-    _id: 'johndoe@gmail.com',
-    name: 'John Doe',
-    email: 'johndoe@gmail.com',
-});
+db.users.insertMany([
+    {
+        _id: 'johndoe@gmail.com',
+        name: 'John Doe',
+        email: 'johndoe@gmail.com',
+    },
+    {
+        _id: 'vithor@gmail.com',
+        name: 'ViThor',
+        email: 'vithor@gmail.com',
+    }
+]);
 
 db.credit_cards.insertMany([
     {
@@ -18,6 +25,12 @@ db.credit_cards.insertMany([
         limit: 1000,
         user_id: 'johndoe@gmail.com',
     },
+    {
+        _id: 3,
+        title: 'Santander',
+        limit: 3000,
+        user_id: 'vithor@gmail.com'
+    }
 ]);
 
 db.expenses.insertMany([
@@ -45,4 +58,21 @@ db.expenses.insertMany([
         credit_card_id: 2,
         tags: ['transporte'],
     },
+    {
+        _id: 4,
+        title: 'Netflix',
+        value: 15,
+        date: '2021-01-04',
+        credit_card_id: 3,
+        tags: ['entretenimento'],
+    },
+    {
+        _id: 5,
+        title: 'Amazon',
+        value: 200,
+        date: '2021-01-05',
+        credit_card_id: 3,
+        tags: ['compras'],
+    },
 ]);
+
