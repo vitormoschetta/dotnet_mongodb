@@ -1,6 +1,5 @@
 using dotnet_mongodb.Data;
 using dotnet_mongodb.Application.Shared;
-using dotnet_mongodb.Application.User;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 using Microsoft.AspNetCore.Authorization;
@@ -22,9 +21,14 @@ public class ExpenseController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<ExpenseEntity>> Get([FromRoute] Guid creditCardId)
+    public ActionResult<IEnumerable<ExpenseEntity>> Get([FromRoute] Guid creditCardId, [FromQuery] string? tag)
     {
-        return _db.Expenses.Find(x => x.CreditCardId == creditCardId).ToList();
+        var expenses = _db.Expenses.Find(x => x.CreditCardId == creditCardId).ToList();
+        if (!string.IsNullOrEmpty(tag))
+        {
+            expenses = expenses.Where(x => x.Tags.Contains(tag)).ToList();
+        }
+        return expenses;
     }
 
     [HttpGet("{id}")]

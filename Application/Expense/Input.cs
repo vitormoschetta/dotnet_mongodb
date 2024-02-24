@@ -9,6 +9,7 @@ public class ExpenseCreateInput : BaseInput
     public string Title { get; set; } = string.Empty;
     public DateTime Date { get; set; }
     public decimal Value { get; set; }
+    public List<string> Tags { get; set; } = null!;
 
     public override bool IsInvalid
     {
@@ -24,7 +25,8 @@ public class ExpenseCreateInput : BaseInput
         Title = Title,
         Date = Date,
         Value = Value,
-        CreditCardId = creditCard.Id
+        CreditCardId = creditCard.Id,
+        Tags = Tags
     };
 }
 

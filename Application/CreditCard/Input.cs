@@ -1,5 +1,4 @@
 using dotnet_mongodb.Application.Shared;
-using dotnet_mongodb.Application.User;
 using FluentValidation;
 
 namespace dotnet_mongodb.Application.CreditCard;
@@ -17,10 +16,10 @@ public class CreditCardCreateInput : BaseInput
         }
     }
 
-    public CreditCardEntity ToEntity(UserEntity user) => new()
+    public CreditCardEntity ToEntity(string userEmail) => new()
     {
         Title = Title,
-        UserEmail = user.Email,
+        UserEmail = userEmail
     };
 }
 

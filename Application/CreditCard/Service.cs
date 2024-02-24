@@ -19,7 +19,7 @@ public class CreditCardService
         if (input.IsInvalid)
             return Output.Fail(EDomainCode.InvalidInput, input.Errors);
 
-        var entity = input.ToEntity(user);
+        var entity = input.ToEntity(user.Email);
 
         var creditCard = _db.CreditCards.Find(x => x.UserEmail == user.Email && x.Title == entity.Title).FirstOrDefault();
 
