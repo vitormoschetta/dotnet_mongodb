@@ -15,6 +15,15 @@ public class TagCreateInput : BaseInput
             return !ValidationResult.IsValid;
         }
     }
+
+    public TagEntity ToEntity(string userEmail)
+    {
+        return new TagEntity
+        {
+            Title = Title,
+            UserEmail = userEmail
+        };
+    }
 }
 
 public class TagCreateInputValidator : AbstractValidator<TagCreateInput>

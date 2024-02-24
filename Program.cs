@@ -2,6 +2,7 @@ using System.Text;
 using dotnet_mongodb.Application.CreditCard;
 using dotnet_mongodb.Application.Expense;
 using dotnet_mongodb.Application.Shared;
+using dotnet_mongodb.Application.Tag;
 using dotnet_mongodb.Application.User;
 using dotnet_mongodb.Data;
 using dotnet_mongodb.Filters;
@@ -30,6 +31,7 @@ builder.Services.AddSingleton<MongoDbContext>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<CreditCardService>();
 builder.Services.AddScoped<ExpenseService>();
+builder.Services.AddScoped<TagService>();
 builder.Services.AddScoped<Jwt>();
 
 builder.Services.AddEndpointsApiExplorer();

@@ -24,9 +24,7 @@ public class TagController : ControllerBase
     public ActionResult<IEnumerable<string>> Get()
     {
         var user = HttpContext.Items[AttributeKeys.User] as UserEntity ?? throw new UnauthorizedAccessException("Usuário não encontrado");
-        var creditCards = _db.CreditCards.Find(x => x.UserEmail == user.Email).ToList();
-        var expenses = _db.Expenses.Find(x => creditCards.Select(y => y.Id).Contains(x.CreditCardId)).ToList();
-        var tags = expenses.SelectMany(x => x.Tags).Distinct().ToList();
-        return tags;
+        var tags = _db.Tags.Find(x => x.UserEmail == user.Email).ToList().Select(x => x.Title).ToList();
+        return Ok(tags);
     }
 }

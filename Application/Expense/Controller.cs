@@ -3,6 +3,7 @@ using dotnet_mongodb.Application.Shared;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 using Microsoft.AspNetCore.Authorization;
+using dotnet_mongodb.Application.User;
 
 namespace dotnet_mongodb.Application.Expense;
 
@@ -28,7 +29,7 @@ public class ExpenseController : ControllerBase
         {
             expenses = expenses.Where(x => x.Tags.Contains(tag)).ToList();
         }
-        return expenses;
+        return Ok(expenses);
     }
 
     [HttpGet("{id}")]
@@ -44,7 +45,8 @@ public class ExpenseController : ControllerBase
     [HttpPost]
     public ActionResult<Output> Post([FromRoute] Guid creditCardId, [FromBody] ExpenseCreateInput input)
     {
-        var output = _service.Execute(input, creditCardId);
+        var user = HttpContext.Items[AttributeKeys.User] as UserEntity ?? throw new UnauthorizedAccessException("Usuário não encontrado");
+        var output = _service.Execute(input, creditCardId, user.Email);
         var res = ResponseHttp.Build(output, HttpMethod.Post);
         return StatusCode((int)res.Code, res);
     }

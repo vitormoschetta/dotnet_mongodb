@@ -25,7 +25,8 @@ public class CreditCardController : ControllerBase
     public ActionResult<IEnumerable<CreditCardEntity>> Get()
     {
         var user = HttpContext.Items[AttributeKeys.User] as UserEntity ?? throw new UnauthorizedAccessException("Usuário não encontrado");
-        return _db.CreditCards.Find(x => x.UserEmail == user.Email).ToList();
+        var creditCards = _db.CreditCards.Find(x => x.UserEmail == user.Email).ToList();
+        return Ok(creditCards);
     }
 
     [HttpGet("{id}")]
